@@ -1,7 +1,11 @@
 
+# Promises
+
 ## Problems with basic Node.js
-* Normal exception handling is nearly useless because Node decomposes the call stack, violating the assumption of locality on which the exception pattern rests. Throwing code has no reason to expect that there is an enclosing scope ready to make sense of the exception, so only poorly-behaved code throws. Conversely, writing paranoid calling code requires both wrapping the call in try..catch and handling its explicit err callback argument. 
-* Standard node.js code rarely makes use of function return values, because the actual results of functions are not available in time to be returned. It ignores a valuable language feature with a rich history, and makes functional programming awkward. This comes just as the power of functional programming is being rediscovered as a useful approach to scale and concurrency problems (Clojure, Haskell, etc).
+* Node.js and its built-in modules amount to a surprisingly bare-metal system. It's fast, flexible, and quite unconstrained, but certain language niceties that you might expect are effectively absent.
+	* Normal exception handling is nearly useless because Node decomposes the call stack, violating the assumption of locality on which the exception pattern rests. Throwing code should not assume that there is an enclosing scope ready to make sense of the exception, so only poorly-behaved code throws. Conversely, writing paranoid calling code requires both wrapping the call in try..catch and handling its explicit err callback argument. 
+	* Standard node.js code rarely makes use of function return values, because the actual results of functions are not available in time to be returned. It ignores a valuable language feature with a rich history, and makes functional programming awkward. This comes just as the power of functional programming is being rediscovered as a useful approach to scale and concurrency problems (Clojure, Haskell, etc).
+* Node lacks built-in mechanisms to manage calls to multiple asynchronous functions, either serial or parallel. Libraries like async.js are one response to this need. Promises are another.
 
 ## Promises
 * Promise chaining restores the power of exception handling. If an exception is thrown within a promise listener, it is converted into a rejection, which propagates down the chain until a rejection listener handles it. 
@@ -21,10 +25,10 @@
 * A promise listener will only be called once, and only one (resolution or rejection) will be called. This is in marked contrast to the normal node.js calling convention, which leaves lots of room for error. Buggy library code can call a callback multiple times, potentially with multiple values, and defensive coding is impractical.
 * Promise listeners will not be called before when()/then() returns (not true of jQuery, sadly).
 
-
 ## Promise problems
 * Debugging can be difficult, since stack traces tend to be even shorter than with basic node code, and what's left is mostly Q guts.
 * Forgetting to return or terminate a promise chain is easy, and results in exceptions being silently swallowed.
-* There is a performance cost.
-* For better or worse, the normal node.js callback pattern allows for one function to easily "return" return values. Promises do not.
+* There is a performance cost to wrapping everything in additional function layers and nexTick() calls.
+* For better or worse, the normal node.js callback pattern allows for one function to easily "return" multiple values. Promises do not.
+
 
