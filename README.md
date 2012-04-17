@@ -16,6 +16,12 @@
 * How basic node.js code behaves when exceptions are thrown.
 	* Exceptions can be lost.
 	* Exceptions can flow from application code into library code, leading to misattribution of problems.
+* How promises work
+	* Promise lifecycle
+		* A provider creates a "deferred" and passes its corresponding "promise" object off to a consumer.
+		* The consumer calls promise.then() or Q.when(promise) to install resolution and/or rejecton listeners.
+		* Some asynchronous op completes, and the provider calls deferred.resolve(value) or deferred.reject(reason) to indicate either a return value or an error, respectively.
+		* The 
 * Main differences between Q and jQuery promises
 	* Q promises chainable by default, while jQuery makes you call a pipe() method for some reason.
 	* Q guarantees that no listener will be called before the then/when() call returns; jQuery does not.
@@ -30,5 +36,11 @@
 * Forgetting to return or terminate a promise chain is easy, and results in exceptions being silently swallowed.
 * There is a performance cost to wrapping everything in additional function layers and nexTick() calls.
 * For better or worse, the normal node.js callback pattern allows for one function to easily "return" multiple values. Promises do not.
+* The promise pattern is somewhat contagious. If you adopt it you might be tempted to write promise adapters around callback-based modules.
 
+## Names to know
+* Tyler Close: the creator of the Q API (aka ref_send), part of the Waterken project.
+* Kris Kowal: author and maintainer of Q and related modules for Node.js
+
+## Interesting projects
 
