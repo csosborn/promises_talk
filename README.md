@@ -6,7 +6,7 @@ Chris Osborn
 csosborn@gmail.com
 github.com/csosborn, github.com/capsela
 
-* and off we go... *
+*and off we go...*
 
 ## Problems with basic Node.js
 * Node.js and its built-in modules amount to a surprisingly bare-metal system. It's fast, flexible, and quite unconstrained, but certain language niceties that you might expect are effectively absent.
