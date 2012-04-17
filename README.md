@@ -2,9 +2,9 @@
 
 ### Preliminaries
 
-Chris Osborn
-csosborn@gmail.com
-github.com/csosborn, github.com/capsela
+	Chris Osborn
+	csosborn@gmail.com
+	github.com/csosborn, github.com/capsela
 
 *and off we go...*
 
