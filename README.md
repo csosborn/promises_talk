@@ -7,7 +7,7 @@
 	* Standard node.js code rarely makes use of function return values, because the actual results of functions are not available in time to be returned. It ignores a valuable language feature with a rich history, and makes functional programming awkward. This comes just as the power of functional programming is being rediscovered as a useful approach to scale and concurrency problems (Clojure, Haskell, etc).
 * Node lacks built-in mechanisms to manage calls to multiple asynchronous functions, either serial or parallel. Libraries like async.js are one response to this need. Promises are another.
 
-## Promises
+## Promises to the rescue
 * Promise chaining restores the power of exception handling. If an exception is thrown within a promise listener, it is converted into a rejection, which propagates down the chain until a rejection listener handles it. 
 * Code written using chained promises uses function return values (and ideally, *only* return values) to communicate its results, so with some discipline asynchronous Javascript can behave like a functional language.
 
@@ -21,7 +21,8 @@
 		* A provider creates a "deferred" and passes its corresponding "promise" object off to a consumer.
 		* The consumer calls promise.then() or Q.when(promise) to install resolution and/or rejecton listeners.
 		* Some asynchronous op completes, and the provider calls deferred.resolve(value) or deferred.reject(reason) to indicate either a return value or an error, respectively.
-		* The 
+		* The consumer's listener is called.
+		* If the consumer's listener returns a value or throws an exception, that resolution or rejection is propagated to chained listeners.
 * Main differences between Q and jQuery promises
 	* Q promises chainable by default, while jQuery makes you call a pipe() method for some reason.
 	* Q guarantees that no listener will be called before the then/when() call returns; jQuery does not.

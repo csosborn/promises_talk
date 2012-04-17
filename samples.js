@@ -13,23 +13,29 @@ function byteCount(path, cb) {
 	});
 }
 
+exports.byteCount = byteCount;
+
 // The same thing, but in promise style:
-function byteCount(path) {
-	return Qfs.readFile(path).then(
+function byteCount_p(path) {
+	return Qfs.read(path).then(
 		function(fileData) {
 			return fileData.length;
 		}
 	);
 }
 
+exports.byteCount_p = byteCount_p;
+
 // And here's a shorter form, possible in Q.
 // This has the added advantage of communicating intent in a way that allows useful optimizations (eg. when the promise is remote).
-function byteCount(path) {
-	return Qfs.readFile(path).get('length');
+function byteCount_p2(path) {
+	return Qfs.read(path).get('length');
 }
 
-// what does Qfs.readFile look like?
-function readFile(path) {
+exports.byteCount_p2 = byteCount_p2;
+
+// What does Qfs.read look like? Something like this:
+function read(path) {
 	// create a deferred, the promise component of which will be returned synchronously
 	var deferred = Q.defer();
 	
@@ -45,8 +51,10 @@ function readFile(path) {
 	return deferred.promise;
 }
 
+exports.read = read;
 
-// Now a more complicated function that returns the largest file size given multiple files. A library like async.js could make this simpler, but here is the basic pattern:
+// Now a more complicated function that returns the largest file size given multiple files. 
+// A library like async.js could make this simpler, but here is the basic pattern:
 function largestByteCount(paths, cb) {
 	var calls = paths.length;
 	var aborted = false;
@@ -69,11 +77,13 @@ function largestByteCount(paths, cb) {
 	});
 }
 
+exports.largestByteCount = largestByteCount;
+
 // using promises:
-function largestByteCount(paths) {
+function largestByteCount_p(paths) {
 	// call byteCount on each path to produce an array of promises
 	var sizePromises = paths.map(function(path) {
-		return byteCount(path);
+		return byteCount_p(path);
 	});
 	// resolve all promises in parallel
 	return Q.all(sizePromises).then(
@@ -84,3 +94,4 @@ function largestByteCount(paths) {
 	);
 }
 
+exports.largestByteCount_p = largestByteCount_p;
